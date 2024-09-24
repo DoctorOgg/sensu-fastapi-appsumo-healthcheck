@@ -134,12 +134,13 @@ func executeCheck(event *types.Event) (int, error) {
 		warnings = append(warnings, fmt.Sprintf("status is not ok, expected ok"))
 	}
 
-	// now we need to check each key in the backends map and make sure it has a value of "working"
+	// check to see if the backends key exists
 	backends, ok := data["backends"].(map[string]interface{})
 	if !ok {
 		return sensu.CheckStateCritical, fmt.Errorf("backends is not a map")
 	}
 
+	// now we need to check each key in the backends map and make sure it has a value of "working"
 	for key, value := range backends {
 		if value != "working" {
 			allWorking = false
